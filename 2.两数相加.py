@@ -8,8 +8,20 @@
 输出：7 -> 0 -> 8
 原因：342 + 465 = 807
 """
+import time
 
 
+def clock(func):
+    def clocked(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print("函数{0}的运行时间为： {1}".format(func.__name__, end - start))
+        return result
+    return clocked
+
+
+# 生成链表节点
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -18,42 +30,50 @@ class ListNode:
 
 class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        prenode = ListNode(0)
-        lastnode = prenode
-        val = 0
-        while val or l1 or l2:
-            val, cur = divmod(val + (l1.val if l1 else 0) + (l2.val if l2 else 0), 10)
-            lastnode.next = ListNode(cur)
-            lastnode = lastnode.next
+        # 用来生成和的链表，创造头结点
+        head_node = ListNode(0)
+        current_node = head_node
+        # 进位初始为0
+        carry = 0
+        while carry or l1 or l2:
+            # divmod(进位+l1节点的值(三目运算判断如果l1不为空则取l1节点的值，为空则为0)+l2节点的值)，除以10）
+            carry, cur = divmod(carry + (l1.val if l1 else 0) + (l2.val if l2 else 0), 10)
+            # head_node.next指向第一个节点，current_node指向当前插入的节点
+            current_node.next = ListNode(cur)
+            current_node = current_node.next
+            # 取下一位，如果当前节点为空，则下一节点也为空
             l1 = l1.next if l1 else None
             l2 = l2.next if l2 else None
-        return prenode.next
+        return head_node.next
 
 
+# 传入一个list，返回一个链表的第一个节点的引用
 def generateList(l: list) -> ListNode:
-    prenode = ListNode(0)
-    lastnode = prenode
+    head_node = ListNode(0)
+    current_node = head_node
     for val in l:
-        lastnode.next = ListNode(val)
-        lastnode = lastnode.next
-    return prenode.next
+        current_node.next = ListNode(val)
+        current_node = current_node.next
+    return head_node.next
 
 
+# 传入一个链表，依次输出节点内保存的值
 def printList(l: ListNode):
     while l:
-        print("%d, " % (l.val), end='')
+        print("%d , " % (l.val), end='')
         l = l.next
     print('')
 
 
+@clock
 def main():
     l1 = generateList([1, 5, 8])
     l2 = generateList([9, 1, 2, 9])
     printList(l1)
     printList(l2)
     s = Solution()
-    sum = s.addTwoNumbers(l1, l2)
-    printList(sum)
+    sum_two_number = s.addTwoNumbers(l1, l2)
+    printList(sum_two_number)
 
 
 if __name__ == "__main__":
