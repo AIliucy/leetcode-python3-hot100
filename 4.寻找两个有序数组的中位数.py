@@ -32,54 +32,54 @@ class Solution:
         if n == 0:
             raise ValueError
 
-        # nums1中index在imid左边的都被分到左堆，nums2中jmid左边的都被分到左堆
-        imin, imax = 0, m
+        # nums1中index在i_mid左边的都被分到左堆，nums2中j_mid左边的都被分到左堆
+        i_min, i_max = 0, m
 
         # 二分答案
-        while (imin <= imax):
-            imid = imin + (imax - imin) // 2
-            # 左堆最大的只有可能是nums1[imid-1],nums2[jmid-1]
+        while i_min <= i_max:
+            i_mid = i_min + (i_max - i_min) // 2
+            # 左堆最大的只有可能是nums1[i_mid-1],nums2[jmid-1]
             # 右堆最小只有可能是nums1[imid],nums2[jmid]
             # 让左右堆大致相等需要满足的条件是imid+jmid = m-imid+n-jmid 即 jmid = (m+n-2imid)//2
             # 为什么是大致呢？因为有总数为奇数的情况，这里用向下取整数操作，所以如果是奇数，右堆会多1
-            jmid = (m + n - 2 * imid) // 2
+            j_mid = (m + n - 2 * i_mid) // 2
 
             # 前面的判断条件只是为了保证不会index out of range
-            if imid > 0 and nums1[imid - 1] > nums2[jmid]:
-                # imid太大了，这是里精确查找，不是左闭右开，而是双闭区间，所以直接移动一位
-                imax = imid - 1
-            elif imid < m and nums2[jmid - 1] > nums1[imid]:
-                imin = imid + 1
+            if i_mid > 0 and nums1[i_mid - 1] > nums2[j_mid]:
+                # i_mid太大了，这是里精确查找，不是左闭右开，而是双闭区间，所以直接移动一位
+                i_max = i_mid - 1
+            elif i_mid < m and nums2[j_mid - 1] > nums1[i_mid]:
+                i_min = i_mid + 1
             # 满足条件
             else:
                 # 边界情况处理，都是为了不out of index
                 # 依次得到左堆最大和右堆最小
-                if imid == m:
-                    minright = nums2[jmid]
-                elif jmid == n:
-                    minright = nums1[imid]
+                if i_mid == m:
+                    min_right = nums2[j_mid]
+                elif j_mid == n:
+                    min_right = nums1[i_mid]
                 else:
-                    minright = min(nums1[imid], nums2[jmid])
+                    min_right = min(nums1[i_mid], nums2[j_mid])
 
-                if imid == 0:
-                    maxleft = nums2[jmid - 1]
-                elif jmid == 0:
-                    maxleft = nums1[imid - 1]
+                if i_mid == 0:
+                    max_left = nums2[j_mid - 1]
+                elif j_mid == 0:
+                    max_left = nums1[i_mid - 1]
                 else:
-                    maxleft = max(nums1[imid - 1], nums2[jmid - 1])
+                    max_left = max(nums1[i_mid - 1], nums2[j_mid - 1])
 
                 # 前面也提过，因为取中间的时候用的是向下取整，所以如果总数是奇数的话，
-                # 应该是右边个数多一些，边界的minright就是中位数
+                # 应该是右边个数多一些，边界的min_right就是中位数
                 if 1 == ((m + n) % 2):
-                    return minright
+                    return min_right
 
                     # 否则我们在两个值中间做个平均
-                return (maxleft + minright) / 2
+                return (max_left + min_right) / 2
 
 
 def main():
-    nums1 = [1, 3]
-    nums2 = [2]
+    nums1 = [9, 10, 11]
+    nums2 = [1, 4, 7, 9]
     a = Solution()
     print(a.findMedianSortedArrays(nums1, nums2))
 
