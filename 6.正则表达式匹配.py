@@ -46,17 +46,23 @@ p = "mis*is*p*."
 
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        S = len(s)
-        P = len(p)
+        s_len = len(s)
+        p_len = len(p)
         memo = {}
 
+        # dp(i, j)表示 s[i]前的字符串和p[j]前的字符串匹配，记录结果
         def dp(i, j):
             if (i, j) in memo:
                 return memo[(i, j)]
-            if j == P:
-                return i == S
-            pre = i < S and p[j] in {s[i], "."}
-            if j <= P - 2 and p[j + 1] == "*":
+            # 如果j = p_len, 说明p已经匹配完，如果此时i刚好也匹配完则返回true
+            # 如果i不等于s_len则一定不能匹配成功，返回false
+            if j == p_len:
+                return i == s_len
+            # x and y x为真，返回y，x为假，返回x
+            # 1. 直接匹配，如果p[j]==s[i],或者p[j]=="."，则匹配成功
+            pre = i < s_len and p[j] in {s[i], "."}
+            # 2. 判断有下一个字符有 × 的情况
+            if j <= p_len - 2 and p[j + 1] == "*":
                 tmp = dp(i, j + 2) or pre and dp(i + 1, j)
             else:
                 tmp = pre and dp(i + 1, j + 1)
@@ -64,3 +70,14 @@ class Solution:
             return tmp
 
         return dp(0, 0)
+
+
+def main():
+    s = 'abbba'
+    p = 'ab*a'
+    a = Solution()
+    print(a.isMatch(s, p))
+
+
+if __name__ == '__main__':
+    main()
