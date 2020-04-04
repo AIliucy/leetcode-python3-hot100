@@ -22,6 +22,7 @@ def clock(func):
 
 
 # 生成链表节点
+# 链表
 class ListNode:
     def __init__(self, x):
         self.val = x
