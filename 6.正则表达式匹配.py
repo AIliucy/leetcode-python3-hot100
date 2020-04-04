@@ -50,7 +50,7 @@ class Solution:
         p_len = len(p)
         memo = {}
 
-        # dp(i, j)表示 s[i]前的字符串和p[j]前的字符串匹配，记录结果
+        # dp(i, j)表示 s[i]前,即0～(i-1)的字符串和p[j]前的字符串匹配，记录结果
         def dp(i, j):
             if (i, j) in memo:
                 return memo[(i, j)]
@@ -61,7 +61,7 @@ class Solution:
             # x and y x为真，返回y，x为假，返回x
             # 1. 直接匹配，如果p[j]==s[i],或者p[j]=="."，则匹配成功
             pre = i < s_len and p[j] in {s[i], "."}
-            # 2. 判断有下一个字符有 × 的情况
+            # 2. 判断有下一个字符有 × 的情况，j<=p_len-2是因为如果j>p_len-2，则j为最后一个字符，下一个字符不可能是×
             if j <= p_len - 2 and p[j + 1] == "*":
                 tmp = dp(i, j + 2) or pre and dp(i + 1, j)
             else:
