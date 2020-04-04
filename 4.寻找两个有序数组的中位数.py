@@ -35,7 +35,7 @@ class Solution:
         # nums1中index在i_mid左边的都被分到左堆，nums2中j_mid左边的都被分到左堆
         i_min, i_max = 0, m
 
-        # 二分答案
+        # 二分
         while i_min <= i_max:
             i_mid = i_min + (i_max - i_min) // 2
             # 左堆最大的只有可能是nums1[i_mid-1],nums2[jmid-1]
