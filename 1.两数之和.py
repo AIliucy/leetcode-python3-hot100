@@ -53,7 +53,7 @@ def clock(func):
 #             elif sum > target:
 #                 right_point -= 1
 
-# 哈希算法
+# 哈希算法,以空间换事件
 @clock
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
