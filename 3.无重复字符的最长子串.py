@@ -20,7 +20,7 @@
 
 
 class Solution:
-
+    # 滑动窗口
     def lengthOfLongestSubstring(self, s: str) -> int:
         # 字符串为空则返回零
         if not s:
